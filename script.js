@@ -95,22 +95,27 @@ function getPasswordOptions() {
   let length = parseInt(
     prompt("Enter the number of characters in the password: ")
     )
-
+  
+    // Check if length of password is a number
   if (isNaN(length)) {
     alert("Please enter a valid number.");
     return;
   }
 
+  // Check if length of password is less than 10
   if (length < 10){
     alert("Please enter a password with at least 10 characters.");
     return;
   }
 
+    // Check if length of password is gretaer than 64
   if (length > 64) {
     alert("Please enter a password with no more than 64 characters.");
     return;
   }
 
+
+  // Ask the user to confirm the password characters they want
   let hasSpecialCharacters = confirm(
     "Press OK to include special characters"
   )
@@ -127,6 +132,7 @@ function getPasswordOptions() {
       "Press OK to include uppercase characters"
     )
 
+  // Check if user chose a character type
   if (hasLowerCaseCharacters === false &&
     hasUpperCaseCharacters === false && 
     hasNumericCharacters === false && 
@@ -160,7 +166,6 @@ return randomElement;
 // Function to generate password with user input
 function generatePassword() {
   let options = getPasswordOptions();
-  console.log(options)
 
   let result = [];
 
@@ -194,7 +199,7 @@ function generatePassword() {
     result.push(generatedCharacter);
     
   }
-  console.log(result);
+
   return result.join("")
 }
 // Get references to the #generate element
