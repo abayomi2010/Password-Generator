@@ -88,13 +88,65 @@ var upperCasedCharacters = [
   'Z'
 ];
 
+
 // Function to prompt user for password options
 function getPasswordOptions() {
   // Variable to store length of password
   let length = parseInt(
-    prompt(`Enter the number of characters in the password: `)
+    prompt("Enter the number of characters in the password: ")
+    )
+
+  if (isNaN(length)) {
+    alert("Please enter a valid number.");
+    return;
+  }
+
+  if (length < 10){
+    alert("Please enter a password with at least 10 characters.");
+    return;
+  }
+
+  if (length > 64) {
+    alert("Please enter a password with no more than 64 characters.");
+    return;
+  }
+
+  let hasSpecialCharacters = confirm(
+    "Press OK to include special characters"
   )
 
+  let hasNumericCharacters = confirm(
+    "Press OK to include numeric characters"
+  )
+
+  let hasLowerCaseCharacters = confirm(
+      "Press OK to include lowercase characters"
+    )
+
+  let hasUpperCaseCharacters = confirm(
+      "Press OK to include uppercase characters"
+    )
+
+  if (hasLowerCaseCharacters === false &&
+    hasUpperCaseCharacters === false && 
+    hasNumericCharacters === false && 
+    hasSpecialCharacters === false) {
+      alert("Please select at least one character type.");
+      return;
+ 
+    }
+
+  let passwordOptions = {
+  length: length,
+  hasSpecialCharacters: hasSpecialCharacters,
+  hasLowerCaseCharacters: hasLowerCaseCharacters,
+  hasNumericCharacters: hasNumericCharacters,
+  hasUpperCaseCharacters: hasUpperCaseCharacters
+}
+
+  // console.log(passwordOptions)
+
+  return passwordOptions;
 }
 
 // Function for getting a random element from an array
@@ -107,9 +159,44 @@ return randomElement;
 
 // Function to generate password with user input
 function generatePassword() {
+  let options = getPasswordOptions();
+  console.log(options)
 
+  let result = [];
+
+  let possibleCharacters = [];
+
+  let guaranteedCharacters = [];
+
+  if (options.hasSpecialCharacters) {
+    possibleCharacters = possibleCharacters.concat(specialCharacters);
+    guaranteedCharacters.push(getRandom(specialCharacters))
+  }
+
+  if (options.hasLowerCaseCharacters) {
+    possibleCharacters = possibleCharacters.concat(lowerCasedCharacters);
+    guaranteedCharacters.push(getRandom(lowerCasedCharacters))
+  }
+
+  if (options.hasUpperCaseCharacters) {
+    possibleCharacters = possibleCharacters.concat(upperCasedCharacters);
+    guaranteedCharacters.push(getRandom(upperCasedCharacters))
+  }
+
+  if (options.hasNumericCharacters) {
+    possibleCharacters = possibleCharacters.concat(numericCharacters);
+    guaranteedCharacters.push(getRandom(numericCharacters));
+  }
+
+
+  for (let i = 0; i < options.length; i++) {
+    let generatedCharacter = getRandom(possibleCharacters);
+    result.push(generatedCharacter);
+    
+  }
+  console.log(result);
+  return result.join("")
 }
-
 // Get references to the #generate element
 var generateBtn = document.querySelector('#generate');
 
